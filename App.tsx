@@ -6,23 +6,23 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {SafeAreaView, Text, useColorScheme, View} from 'react-native';
+import React, {useState} from 'react';
+import {SafeAreaView, View, Text, Button} from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+function App() {
+  const [greeting, setGreeting] = useState('Hello');
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView>
       <View>
-        <Text>Hello</Text>
+        <Text style={{fontSize: 40, textAlign: 'center'}}>
+          {greeting} Hi! I'M React Native
+        </Text>
+        <Button
+          title={`Press me and Say Bye`}
+          onPress={() => {
+            setGreeting('Bye');
+          }}
+        />
       </View>
     </SafeAreaView>
   );
