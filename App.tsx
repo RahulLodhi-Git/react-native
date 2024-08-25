@@ -2,6 +2,7 @@
 import {SafeAreaView, useColorScheme, ScrollView} from 'react-native';
 import React from 'react';
 import FlatCards from './components/FlatCards';
+import HorizontalCards from './components/HorizontalCards';
 
 const App = (): JSX.Element => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -10,6 +11,7 @@ const App = (): JSX.Element => {
     <SafeAreaView>
       <ScrollView>
         <FlatCards />
+        <HorizontalCards />
       </ScrollView>
     </SafeAreaView>
   );
