@@ -5,13 +5,13 @@ import {View, Text, StyleSheet} from 'react-native';
 function FlatCards(): JSX.Element {
   return (
     <View style={styles.flexContainer}>
-      <View style={styles.flexItem1}>
+      <View style={[styles.flexitem, styles.flexItem1]}>
         <Text style={styles.text}>A</Text>
       </View>
-      <View style={styles.flexItem2}>
+      <View style={[styles.flexitem, styles.flexItem2]}>
         <Text style={styles.text}>B</Text>
       </View>
-      <View style={styles.flexItem3}>
+      <View style={[styles.flexitem, styles.flexItem3]}>
         <Text style={styles.text}>C</Text>
       </View>
     </View>
@@ -29,28 +29,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     fontSize: 30,
   },
-  flexItem1: {
-    backgroundColor: 'red',
+  flexitem: {
     width: '30%',
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 50,
+  },
+  flexItem1: {
+    backgroundColor: 'red',
   },
   flexItem2: {
     backgroundColor: 'blue',
     marginHorizontal: '5%',
-    width: '30%',
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   flexItem3: {
     backgroundColor: '#0d041a',
     width: '30%',
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     color: '#fff',
