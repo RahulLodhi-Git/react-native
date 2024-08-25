@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  useColorScheme,
-  ScrollView,
-} from 'react-native';
+import {SafeAreaView, useColorScheme, ScrollView} from 'react-native';
 import React from 'react';
 import FlatCards from './components/FlatCards';
 
