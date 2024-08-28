@@ -4,16 +4,18 @@ import React from 'react';
 import FlatCards from './components/FlatCards';
 import HorizontalCards from './components/HorizontalCards';
 import BlogCard from './components/BlogCard';
+import PassGenerator from './components/PassGenerator';
 
 const App = (): JSX.Element => {
   const isDarkMode = useColorScheme() === 'dark';
   console.log('isDarkMode', isDarkMode);
   return (
     <SafeAreaView>
-      <ScrollView>
-        <FlatCards />
+      <ScrollView keyboardShouldPersistTaps="handled">
+        {/* <FlatCards />
         <HorizontalCards />
-        <BlogCard />
+        <BlogCard /> */}
+        <PassGenerator />
       </ScrollView>
     </SafeAreaView>
   );
