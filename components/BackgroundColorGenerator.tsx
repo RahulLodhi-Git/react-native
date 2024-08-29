@@ -31,7 +31,6 @@ const BackgroundColorGenerator = (): JSX.Element => {
       let charIndex = Math.round(Math.random() * hexColorRangeChars.length);
       color += hexColorRangeChars.charAt(charIndex);
     }
-    console.log('generateBgColor-->', color);
     return color;
   };
 
