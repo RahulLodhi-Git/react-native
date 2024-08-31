@@ -15,6 +15,7 @@ import diceThree from '../assets/Three.png';
 import diceFour from '../assets/Four.png';
 import diceFive from '../assets/Five.png';
 import diceSix from '../assets/Six.png';
+import RNReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 const DiceGame = () => {
   const [isStart, setIsStart] = useState<boolean>(false);
@@ -64,6 +65,9 @@ const DiceGame = () => {
       setPlayerTurn('left');
     }
     setIsGameOver(prevState => prevState + 1);
+
+    // Trigger haptic feedback
+    RNReactNativeHapticFeedback.trigger('impactLight');
   };
 
   useEffect(() => {
