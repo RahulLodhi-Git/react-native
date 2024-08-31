@@ -6,6 +6,7 @@ import HorizontalCards from './components/HorizontalCards';
 import BlogCard from './components/BlogCard';
 import PassGenerator from './components/PassGenerator';
 import BackgroundColorGenerator from './components/BackgroundColorGenerator';
+import DiceGame from './components/DiceGame';
 
 const App = (): JSX.Element => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -20,7 +21,8 @@ const App = (): JSX.Element => {
     //     {/* <BackgroundColorGenerator /> */}
     //   </ScrollView>
     // </SafeAreaView>
-    <BackgroundColorGenerator />
+    // <BackgroundColorGenerator />
+    <DiceGame />
   );
 };
 
