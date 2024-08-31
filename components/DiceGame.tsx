@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import diceOne from '../assets/One.png';
 import diceTwo from '../assets/Two.png';
 import diceThree from '../assets/Three.png';
@@ -22,8 +22,9 @@ const DiceGame = () => {
   const [rightDice, setRightDice] = useState<ImageBackgroundProps>(diceOne);
   const [LeftTotal, setLeftTotal] = useState<number>(0);
   const [RightTotal, setRightTotal] = useState<number>(0);
-  const [playerTurn, setPlayerTurn] = useState<string>('Left');
+  const [playerTurn, setPlayerTurn] = useState<string>('left');
   const [isGameOver, setIsGameOver] = useState<number>(0);
+  const [winner, setWinner] = useState<number>(50);
 
   let diceNumber = {
     1: diceOne,
@@ -35,13 +36,12 @@ const DiceGame = () => {
   };
 
   const handleStartAndRestart = () => {
-    if (!isStart) {
-      setLeftDice(diceOne);
-      setLeftTotal(0);
-      setRightDice(diceOne);
-      setRightTotal(0);
-    }
-    setIsStart(!isStart);
+    setLeftDice(diceOne);
+    setLeftTotal(0);
+    setRightDice(diceOne);
+    setRightTotal(0);
+    setWinner(50);
+    setIsStart(true);
     setIsGameOver(0);
   };
 
@@ -49,36 +49,38 @@ const DiceGame = () => {
     let index = Math.floor(Math.random() * 6) + 1;
     return index;
   };
+
   const shuffleDice = () => {
     let leftDiceNumber = generateRandomNumber();
     let rightDiceNumber = generateRandomNumber();
+
     setRightDice(diceNumber[rightDiceNumber]);
     setLeftDice(diceNumber[leftDiceNumber]);
     if (playerTurn === 'left') {
-      setLeftTotal(prevState => prevState + leftDiceNumber);
-      setLeftTotal(prevState => prevState + rightDiceNumber);
+      setLeftTotal(prevState => prevState + leftDiceNumber + rightDiceNumber);
       setPlayerTurn('right');
     } else {
-      setRightTotal(prevState => prevState + leftDiceNumber);
-      setRightTotal(prevState => prevState + rightDiceNumber);
+      setRightTotal(prevState => prevState + leftDiceNumber + rightDiceNumber);
       setPlayerTurn('left');
     }
     setIsGameOver(prevState => prevState + 1);
-    if (isGameOver + 1 === 5) {
-      setIsStart(false);
-    }
   };
+
+  useEffect(() => {
+    if (LeftTotal > RightTotal) {
+      setWinner(50 + 10 * isGameOver);
+    }
+    if (LeftTotal < RightTotal) {
+      setWinner(50 - 10 * isGameOver);
+    }
+  }, [LeftTotal, RightTotal]);
 
   return (
     <>
       <View style={styleClass.mainWrap}>
-        <View style={styleClass.overlay} />
+        <View style={[styleClass.overlay, {width: `${winner}%`}]} />
         <Pressable onPress={handleStartAndRestart}>
-          {isGameOver >= 5 ? (
-            <Text style={styleClass.btn}>Restart</Text>
-          ) : (
-            <Text style={styleClass.btn}>{isStart ? 'Stop' : 'Let Play'}</Text>
-          )}
+          <Text style={styleClass.btn}>{isStart ? 'Restart' : 'Let Play'}</Text>
         </Pressable>
 
         <View style={styleClass.diceMainWrap}>
@@ -130,7 +132,6 @@ const styleClass = StyleSheet.create({
     left: 0,
     width: '50%',
     height: '100%',
-    paddingHorizontal: 15,
     paddingVertical: 20,
   },
   diceMainWrap: {
