@@ -22,6 +22,9 @@ const DiceGame = () => {
   const [rightDice, setRightDice] = useState<ImageBackgroundProps>(diceOne);
   const [LeftTotal, setLeftTotal] = useState<number>(0);
   const [RightTotal, setRightTotal] = useState<number>(0);
+  const [playerTurn, setPlayerTurn] = useState<string>('Left');
+  const [isGameOver, setIsGameOver] = useState<number>(0);
+
   let diceNumber = {
     1: diceOne,
     2: diceTwo,
@@ -32,7 +35,14 @@ const DiceGame = () => {
   };
 
   const handleStartAndRestart = () => {
+    if (!isStart) {
+      setLeftDice(diceOne);
+      setLeftTotal(0);
+      setRightDice(diceOne);
+      setRightTotal(0);
+    }
     setIsStart(!isStart);
+    setIsGameOver(0);
   };
 
   const generateRandomNumber = () => {
@@ -42,10 +52,21 @@ const DiceGame = () => {
   const shuffleDice = () => {
     let leftDiceNumber = generateRandomNumber();
     let rightDiceNumber = generateRandomNumber();
-    setLeftDice(diceNumber[leftDiceNumber]);
-    setLeftTotal(prevState => prevState + leftDiceNumber);
     setRightDice(diceNumber[rightDiceNumber]);
-    setRightTotal(prevState => prevState + rightDiceNumber);
+    setLeftDice(diceNumber[leftDiceNumber]);
+    if (playerTurn === 'left') {
+      setLeftTotal(prevState => prevState + leftDiceNumber);
+      setLeftTotal(prevState => prevState + rightDiceNumber);
+      setPlayerTurn('right');
+    } else {
+      setRightTotal(prevState => prevState + leftDiceNumber);
+      setRightTotal(prevState => prevState + rightDiceNumber);
+      setPlayerTurn('left');
+    }
+    setIsGameOver(prevState => prevState + 1);
+    if (isGameOver + 1 === 5) {
+      setIsStart(false);
+    }
   };
 
   return (
@@ -53,7 +74,11 @@ const DiceGame = () => {
       <View style={styleClass.mainWrap}>
         <View style={styleClass.overlay} />
         <Pressable onPress={handleStartAndRestart}>
-          <Text style={styleClass.btn}>{isStart ? 'Stop' : 'Let Play'}</Text>
+          {isGameOver >= 5 ? (
+            <Text style={styleClass.btn}>Restart</Text>
+          ) : (
+            <Text style={styleClass.btn}>{isStart ? 'Stop' : 'Let Play'}</Text>
+          )}
         </Pressable>
 
         <View style={styleClass.diceMainWrap}>
@@ -65,9 +90,19 @@ const DiceGame = () => {
           onPress={shuffleDice}
           activeOpacity={0.8}
           disabled={!isStart}>
-          <Text style={[styleClass.btn, !isStart && styleClass.isDisable]}>
-            Roll me
-          </Text>
+          {isGameOver === 5 ? (
+            <Text style={[styleClass.btn, styleClass.isDisable]}>
+              Game Over
+              {LeftTotal > RightTotal
+                ? '(Purple Wins)💥😜'
+                : '(Green Wins)😜💥'}
+            </Text>
+          ) : (
+            <Text style={[styleClass.btn, !isStart && styleClass.isDisable]}>
+              Roll me{' '}
+              {isStart && (playerTurn === 'left' ? '(Purple)' : '(Green)')}
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
       <Text style={styleClass.title}>
@@ -112,7 +147,7 @@ const styleClass = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     maxWidth: 200,
     zIndex: 3,
     fontSize: 18,
